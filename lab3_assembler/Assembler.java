@@ -12,16 +12,21 @@ import java.util.*;
 public class Assembler {
 
     private static final Map<String, String> OPCODES = new HashMap<>();
+    private static final Map<String, Integer> registerTable = new HashMap<>();
     private static final Map<String, Integer> symbolTable = new HashMap<>();
     private static final List<String> assemblyCode = new ArrayList<>();
     private static final List<String> machineCode = new ArrayList<>();
     private static final int[] memory = new int[256];
     private static int memoryAddress = 0;
 
-    private static int regA = 0;
-    private static int regB = 0;
-    private static int regC = 0;
-    private static int regD = 0;
+    // initialize registers
+    static {
+        registerTable.put("A", 0);
+        registerTable.put("B", 0);
+        registerTable.put("C", 0);
+        registerTable.put("D", 0);
+    }
+
     private static int programCounter = 0;
     private static boolean isRunning = true;
 
@@ -72,15 +77,16 @@ public class Assembler {
             }
 
             String operand = parts.length > 1 ? parts[1].replace(",", "") : "00";
-            String operator = parts.length > 2 ? parts[2]: "";
+            String operator = parts.length > 2 ? parts[2] : "";
             String operandCode, operatorCode;
 
             if (symbolTable.containsKey(operand)) {
-                operandCode = String.format("%02X", symbolTable.get(operand));
+                operandCode = String.format("%02x", symbolTable.get(operand));
             } else if (operand.matches("\\d+")) {
                 operandCode = String.format("%02X", Integer.parseInt(operand));
             } else {
-                operandCode = "00";
+                // convert operand to hex
+                operandCode = String.format("%02X", (int) operand.charAt(0));
             }
             
             if (symbolTable.containsKey(operator)) {
@@ -88,17 +94,23 @@ public class Assembler {
             } else if (operator.matches("\\d+")) {
                 operatorCode = String.format("%02X", Integer.parseInt(operator));
             } else {
-                operatorCode = "00";
+                // convert operator to hex
+                if (operator != "") { 
+                    operatorCode = String.format("%02X", (int) operator.charAt(0));
+                } else {
+                    operatorCode = "00";
+                }
             }
 
             String machineInstr = opcode + operandCode + operatorCode;
+            System.out.println(opcode +" "+ operandCode +" "+ operatorCode);
             machineCode.add(machineInstr);
         }
     }
 
     private static String hexToBinary(String hex) {
         int decimal = Integer.parseInt(hex, 16);
-        return String.format("%12s", Integer.toBinaryString(decimal)).replace(' ', '0');
+        return String.format("%16s", Integer.toBinaryString(decimal)).replace(' ', '0');
     }
 
     private static void executeMachineCode() {
@@ -107,39 +119,48 @@ public class Assembler {
 
         while (programCounter < machineCode.size() && isRunning) {
             String instruction = machineCode.get(programCounter);
-            System.out.println(instruction);
             String opcode = instruction.substring(0, 2);
             String operand = instruction.substring(2, 4);
-            String operator = instruction.substring(3, 5);
+            String operator = instruction.substring(4, 6);
             int operandValue = Integer.parseInt(operand, 16);
             int operatorValue = Integer.parseInt(operator, 16);
-            System.out.println(operatorValue);
 
             switch (opcode) {
                 case "01":
-                    regA = memory[operandValue];
-                    System.out.println("LOAD A, " + operandValue + " -> A = " + regA);
+                    registerTable.replace(""+(char)operandValue, memory[operatorValue]);
+                    System.out.println("LOAD " + (char)operandValue + ", " + operatorValue + " -> " + (char)operandValue + " = " + memory[operatorValue]);
                     break;
 
                 case "02":
-                    memory[operandValue] = regA;
-                    System.out.println("STORE A, " + operandValue + " -> Memory[" + operandValue + "] = " + regA);
+                    memory[operatorValue] = registerTable.get(""+(char)operandValue);
+                    System.out.println("STORE " + (char)operandValue + ", " + 
+                            operatorValue + " -> Memory[" + operatorValue + 
+                            "] = " + registerTable.get(""+(char)operandValue));
                     break;
 
                 case "03":
-                    regA += regB;
-                    System.out.println("ADD A, B -> A = " + regA);
+                    registerTable.replace(""+(char)operandValue, 
+                            registerTable.get(""+(char)operandValue) + 
+                            registerTable.get(""+(char)operatorValue));
+                    System.out.println("ADD " + (char)operandValue +
+                            ", "+ (char)operatorValue + " -> A = " + 
+                        registerTable.get(""+(char)operandValue));
                     break;
 
                 case "04":
-                    regA -= regB;
-                    System.out.println("SUB A, B -> A = " + regA);
+                    registerTable.replace(""+(char)operandValue, 
+                            registerTable.get(operandValue) - 
+                            registerTable.get(operatorValue));
+                    System.out.println("SUB A, B -> A = " + 
+                            registerTable.get((char)operandValue));
                     break;
 
                 case "05":
-                    System.out.println("JUMP " + operandValue);
-                    programCounter = operandValue - 1;
+                    System.out.println((char)operandValue + (char)operatorValue);
+                    System.out.println("JUMP " + (char)operandValue);
+                    programCounter = (char)operandValue - 1;
                     continue;
+
                 case "06":
                     System.out.println("HLT");
                     isRunning = false;
@@ -158,10 +179,11 @@ public class Assembler {
         String[] assemblyProgram = {
                 "VAR X, 5",
                 "LOAD A, X",
+                "LOAD B, X",
                 "ADD A, B",
                 "STORE A, 10",
                 "LOOP: SUB A, B",
-                // "JUMP LOOP",  // 🔄 Should now correctly loop!
+                "JUMP LOOP",  // 🔄 Should now correctly loop!
                  
         };
 
@@ -169,7 +191,7 @@ public class Assembler {
         passTwo();
 
         System.out.println("Symbol Table:");
-        symbolTable.forEach((key, value) -> System.out.println(key + " -> " + value));
+        symbolTable.forEach((key, value) -> System.out.println(key + " -> " + memory[value]));
 
         System.out.println("\nMachine Code (Hex & Binary):");
         for (String code : machineCode) {
