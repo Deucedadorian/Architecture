@@ -149,7 +149,7 @@ public class Assembler {
 
                 case "04":
                     registerTable.replace(""+(char)operandValue, 
-                            registerTable.get(operandValue) - 
+                            registerTable.get(operandValue) * 
                             registerTable.get(operatorValue));
                     System.out.println("SUB A, B -> A = " + 
                             registerTable.get((char)operandValue));
@@ -183,7 +183,7 @@ public class Assembler {
                 "ADD A, B",
                 "STORE A, 10",
                 "LOOP: SUB A, B",
-                "JUMP LOOP",  // 🔄 Should now correctly loop!
+                // "JUMP LOOP",  // 🔄 Should now correctly loop!
                  
         };
 

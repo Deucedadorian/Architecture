@@ -131,7 +131,7 @@ public class Assembler {
     public static void main(String[] args) {
         String[] assemblyProgram = {
                 "VAR X, 5",
-                "LOAD A, X",
+                "LOAD C, X",
                 "ADD A, B",
                 "STORE A, 10",
                 "LOOP: SUB A, B",
