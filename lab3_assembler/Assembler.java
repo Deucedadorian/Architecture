@@ -54,12 +54,6 @@ public class Assembler {
             if (parts[0].endsWith(":")) {
                 String label = parts[0].replace(":", "");
                 symbolTable.put(label, memoryAddress);
-                line = "";
-                for(int i=1; i < parts.length; i++) {
-                    line += parts[i] + " ";
-                }
-                line = line.trim();
-                assemblyCode.add(line);
             } else if (parts[0].equals("VAR")) {
                 String varName = parts[1].replace(",", "");
                 int value = Integer.parseInt(parts[2]);
@@ -72,7 +66,7 @@ public class Assembler {
                     memory[memoryAddress] = Integer.parseInt(parts[2].replace("#", ""));
                     parts[2] = String.valueOf(memoryAddress);
                     memoryAddress++;
-                    line = String.format("%s %s %s", parts[0], parts[1], parts[2]);
+                    line = String.format("%s %s %s #", parts[0], parts[1], parts[2]);
                 }
                 assemblyCode.add(line);
                 memoryAddress++;
@@ -110,17 +104,21 @@ public class Assembler {
             } else {
                 // convert operator to hex
                 if (operator != "") { 
-                    if ((int) operator.charAt(0) == '#') {
-                        operatorCode = String.format("%02X", Integer.parseInt(operator.replace("#", "")));
-                    } else {
                         operatorCode = String.format("%02X", (int) operator.charAt(0));
-                    }
                 } else {
                     operatorCode = "00";
                 }
             }
+            
+            String flag;
+            if (parts.length > 3) {
+                flag = "1";
+            } else {
+                flag = "0";
+            }
 
-            String machineInstr = opcode + operandCode + operatorCode;
+            String machineInstr = opcode + operandCode + operatorCode + flag;
+            System.out.println(machineInstr);
             System.out.println(opcode +" "+ operandCode +" "+ operatorCode);
             machineCode.add(machineInstr);
         }
@@ -137,53 +135,66 @@ public class Assembler {
 
         while (programCounter < machineCode.size() && isRunning) {
             String instruction = machineCode.get(programCounter);
+//            String[] parts = instruction.split(" ");
+//            
+//            if (parts[0].contains(":")) {
+//                instruction = String.format("%s %s %s", parts[1], parts[2], parts[3]);
+//            }
+
             String opcode = instruction.substring(0, 1);
             String operand = instruction.substring(1, 3);
             String operator = instruction.substring(3, 5);
-            int operandValue = Integer.parseInt(operand, 16);
-            int operatorValue = Integer.parseInt(operator, 16);
+            String flag = instruction.substring(5, 6);
 
-            System.out.println(String.format("%s %s %s", opcode, operand, operatorValue));
+            int operandInt = Integer.parseInt(operand, 16);
+            Character operandChar = (char)operandInt;
+            String operandString = operandChar.toString();
 
+            int operatorInt = Integer.parseInt(operator, 16);
+            Character operatorChar = (char)operatorInt;
+            String operatorString = operatorChar.toString();
+
+            System.out.println(String.format("%s %s %s", opcode, operandChar, operatorInt));
 
             switch (opcode) {
                 case "1":
-                    registerTable.replace(""+(char)operandValue, memory[operatorValue]);
-                    System.out.println("LOAD " + (char)operandValue + ", " + operatorValue + " -> " + (char)operandValue + " = " + memory[operatorValue]);
+
+                    registerTable.replace(operandString, memory[operatorInt]);
+                    System.out.println("LOAD " + operandString + ", " + 
+                            operatorInt + " -> " + operandString + " = " + 
+                            memory[operatorInt]);
                     break;
 
                 case "2":
-                    memory[operatorValue] = registerTable.get(""+(char)operandValue);
-                    System.out.println("STORE " + (char)operandValue + ", " + 
-                            operatorValue + " -> Memory[" + operatorValue + 
-                            "] = " + registerTable.get(""+(char)operandValue));
+                    memory[operatorInt] = registerTable.get(operandString);
+                    System.out.println("STORE " + operandString + ", " + 
+                            operatorInt + " -> Memory[" + operatorInt + 
+                            "] = " + registerTable.get(operandString));
                     break;
 
                 case "3":
-                    registerTable.replace(""+(char)operandValue, 
-                            registerTable.get(""+(char)operandValue) + 
-                            registerTable.get(""+(char)operatorValue));
-                    System.out.println("ADD " + (char)operandValue +
-                            ", "+ (char)operatorValue + " -> " +
-                            (char)operandValue + " = " + 
-                        registerTable.get(""+(char)operandValue));
+
+                    int op = flag.equals("1") ? memory[operatorInt] : registerTable.get(operatorString);
+
+                    registerTable.replace(operandString, registerTable.get(operandString) + op);
+                    System.out.println("ADD " + operandString + ", " + 
+                            op + " -> " + operandString + " = " + 
+                            registerTable.get(operandString));
                     break;
 
                 case "4":
-                    registerTable.replace(""+(char)operandValue, 
-                            registerTable.get(""+(char)operandValue) - 
-                            registerTable.get(""+(char)operatorValue));
-                    System.out.println("SUB " + (char)operandValue +
-                            ", "+ (char)operatorValue + " -> " +
-                            (char)operandValue + " = " + 
-                        registerTable.get(""+(char)operandValue));
+                    int op = flag.equals("1") ? memory[operatorInt] : registerTable.get(operatorString);
+                    registerTable.replace(operandString, registerTable.get(operandString) - op);
+                    System.out.println("SUB " + operandString +
+                            ", "+ op + " -> " +
+                            operandString + " = " + 
+                        registerTable.get(operandString));
                     break;
 
                 case "5":
-                    System.out.println("JUMP " + operandValue);
-                    programCounter = (char)operandValue - 1;
-                    break;
-                    //continue;
+                    System.out.println("JUMP " + operandString);
+                    programCounter = memory[operandInt];
+                    continue;
 
                 case "6":
                     System.out.println("HLT");
@@ -191,26 +202,30 @@ public class Assembler {
                     break;
 
                 case "7":
-                    registerTable.replace(""+(char)operandValue, 
-                            registerTable.get(""+(char)operandValue) * 
-                            registerTable.get(""+(char)operatorValue));
-                    System.out.println("MUL " + (char)operandValue +
-                            ", "+ (char)operatorValue + " -> " +
-                            (char)operandValue + " = " + 
-                        registerTable.get(""+(char)operandValue));
+                    int op = flag.equals("1") ? memory[operatorInt] : registerTable.get(operatorString);
+                    registerTable.replace(operandString, registerTable.get(operandString) * op);
+                    System.out.println("MUL " + operandString +
+                            ", "+ op + " -> " +
+                            operandString + " = " + 
+                        registerTable.get(operandString));
                     break;
 
                 case "8":
-                    registerTable.replace(""+(char)operandValue, 
-                            registerTable.get(""+(char)operandValue) / 
-
-                            registerTable.get(""+(char)operatorValue));
-                    System.out.println("DIV " + (char)operandValue +
-                            ", "+ (char)operatorValue + " -> " +
-                            (char)operandValue + " = " + 
-                        registerTable.get(""+(char)operandValue));
+                    int op = flag.equals("1") ? memory[operatorInt] : registerTable.get(operatorString);
+                    registerTable.replace(operandString, registerTable.get(operandString) / op);
+                    System.out.println("DIV " + operandString +
+                            ", "+ op + " -> " +
+                            operandString + " = " + 
+                        registerTable.get(operandString));
                     break;
-                 
+                case "9":
+                    // AND operation
+
+                    break;
+                case "A":
+                    // OR operation
+
+                    break
 
                 default:
                     System.out.println("Unknown opcode: " + opcode);
@@ -222,16 +237,8 @@ public class Assembler {
     public static void main(String[] args) {
         String[] assemblyProgram = {
                 "VAR X, 5",
-                "VAR Y, 2",
-                "LOAD A, X",
-                "LOAD B, X",
-                "LOAD C, #10",
-                "ADD A, B",
-                "STORE A, 10",
-                "LOOP: SUB A, B",
-                "DIV C, A",
-                "LOAD D, Y",
-                "DIV A, C",
+                "LOAD A, #3",
+                "ADD A, #3",
                 //"JUMP LOOP",  // 🔄 Should now correctly loop!
                  
         };
