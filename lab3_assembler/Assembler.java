@@ -244,6 +244,7 @@ public class Assembler {
         String[] assemblyProgram = {
                 "VAR X, 5",
                 "LOAD A, X",
+                "STORE A, 10",
                 "AND A, #7",
                 "LOAD B, #1",
                 "OR B, #1",
