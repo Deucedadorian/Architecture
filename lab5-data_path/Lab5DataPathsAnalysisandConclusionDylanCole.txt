@@ -1,0 +1,9 @@
+﻿Analysis and Conclusion:
+    • Explain how data flows through the CPU, RAM, and storage during computations.
+          The python script is saved in storage. When the script is run, the instructions get loaded into memory. As the CPU begins executing the computation, it requests data from memory using memory addresses. The data is fetched from memory and calculations are made on the data in the CPU based on the instructions retrieved. Some instructions will have the CPU send data back to memory to be saved. Some instructions will send data into storage for more permanent data storage.
+          
+    • Describe how GPIO interactions facilitate data movement to external devices.
+          Using Rpi.GPIO library, pins can be controlled in python. A pin set to out is then able to be turned on when the CPU receives an instruction to set the signal to high. The signal will remain on, powering the pin, until an instruction sets the pin to low. The signal must then terminate at a ground pin after it has moved through the circuit being powered.
+          
+    • Discuss the efficiency of data transfers between different storage media.
+          Data transfer efficiency is a function of through-put. The more channels that are available to move data to or from storage media, the more efficient the transfer will be. Efficiency can also be affected by distance the data needs to travel. Data is limited by the speed of electricity. There is fraction on those wires! Although the speed that data travels is very fast, if there is much data to transfer, it can add up. Lastly, as data moves across distances, data can be lost due to attenuation, “the gradual loss of flux intensity through a medium” to quote Wikipedia. Basically signals weaken as bits of energy fall off the wire. This causes packet loss that sometimes means the lost data has to get sent again, in the case of certain protocols.

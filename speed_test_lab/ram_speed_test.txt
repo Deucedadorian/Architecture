@@ -1,0 +1,172 @@
+RAM read | write speed test:
+
+write speed:
+500+0 records in
+500+0 records out
+524288000 bytes (524 MB, 500 MiB) copied, 41.4999 s, 12.6 MB/s
+
+read speed:
+500+0 records in
+500+0 records out
+524288000 bytes (524 MB, 500 MiB) copied, 0.400473 s, 1.3 GB/s
+
+Network Statistics:
+
+network Latency:
+--- 8.8.8.8 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4007ms
+rtt min/avg/max/mdev = 9.629/10.320/12.023/0.888 ms
+
+Network bandwidth:
+Download Mbps
+128.47
+Upload Mbps
+158.97
+
+
+Storage Latency | Bandwidth:
+storage latency:
+--- /home/dylan/ (ext4 /dev/mmcblk0p2 58.1 GiB) ioping statistics ---
+9 requests completed in 5.55 ms, 36 KiB read, 1.62 k iops, 6.33 MiB/s
+generated 10 requests in 9.00 s, 40 KiB, 1 iops, 4.44 KiB/s
+min/avg/max/mdev = 505.2 us / 616.9 us / 671.5 us / 66.1 us
+
+storage bandwidth:
+write speed test:
+1000+0 records in
+1000+0 records out
+1048576000 bytes (1.0 GB, 1000 MiB) copied, 66.4651 s, 15.8 MB/s
+
+read speed test:
+1000+0 records in
+1000+0 records out
+1048576000 bytes (1.0 GB, 1000 MiB) copied, 0.768703 s, 1.4 GB/s
+
+OVER CLOCK RESULTS
+
+mbw 100 | tee memory_results2.txt                                    
+Long uses 8 bytes. Allocating 2*13107200 elements = 209715200 bytes of memory.
+Using 262144 bytes as blocks for memcpy block copy test.
+Getting down to business... Doing 10 runs per test.
+0	Method: MEMCPY	Elapsed: 0.04201	MiB: 100.00000	Copy: 2380.442 MiB/s
+1	Method: MEMCPY	Elapsed: 0.04155	MiB: 100.00000	Copy: 2406.565 MiB/s
+2	Method: MEMCPY	Elapsed: 0.04191	MiB: 100.00000	Copy: 2386.008 MiB/s
+3	Method: MEMCPY	Elapsed: 0.04143	MiB: 100.00000	Copy: 2413.535 MiB/s
+4	Method: MEMCPY	Elapsed: 0.04151	MiB: 100.00000	Copy: 2409.290 MiB/s
+5	Method: MEMCPY	Elapsed: 0.04212	MiB: 100.00000	Copy: 2374.395 MiB/s
+6	Method: MEMCPY	Elapsed: 0.04176	MiB: 100.00000	Copy: 2394.464 MiB/s
+7	Method: MEMCPY	Elapsed: 0.04189	MiB: 100.00000	Copy: 2387.091 MiB/s
+8	Method: MEMCPY	Elapsed: 0.04192	MiB: 100.00000	Copy: 2385.212 MiB/s
+9	Method: MEMCPY	Elapsed: 0.04303	MiB: 100.00000	Copy: 2324.122 MiB/s
+AVG	Method: MEMCPY	Elapsed: 0.04191	MiB: 100.00000	Copy: 2385.866 MiB/s
+0	Method: DUMB	Elapsed: 0.04147	MiB: 100.00000	Copy: 2411.149 MiB/s
+1	Method: DUMB	Elapsed: 0.04212	MiB: 100.00000	Copy: 2374.282 MiB/s
+2	Method: DUMB	Elapsed: 0.04169	MiB: 100.00000	Copy: 2398.484 MiB/s
+3	Method: DUMB	Elapsed: 0.04142	MiB: 100.00000	Copy: 2414.001 MiB/s
+4	Method: DUMB	Elapsed: 0.04145	MiB: 100.00000	Copy: 2412.545 MiB/s
+5	Method: DUMB	Elapsed: 0.04143	MiB: 100.00000	Copy: 2413.826 MiB/s
+6	Method: DUMB	Elapsed: 0.04142	MiB: 100.00000	Copy: 2414.293 MiB/s
+7	Method: DUMB	Elapsed: 0.04164	MiB: 100.00000	Copy: 2401.537 MiB/s
+8	Method: DUMB	Elapsed: 0.04165	MiB: 100.00000	Copy: 2401.133 MiB/s
+9	Method: DUMB	Elapsed: 0.04154	MiB: 100.00000	Copy: 2407.608 MiB/s
+AVG	Method: DUMB	Elapsed: 0.04158	MiB: 100.00000	Copy: 2404.829 MiB/s
+0	Method: MCBLOCK	Elapsed: 0.03568	MiB: 100.00000	Copy: 2803.005 MiB/s
+1	Method: MCBLOCK	Elapsed: 0.03561	MiB: 100.00000	Copy: 2808.200 MiB/s
+2	Method: MCBLOCK	Elapsed: 0.03560	MiB: 100.00000	Copy: 2808.594 MiB/s
+3	Method: MCBLOCK	Elapsed: 0.03559	MiB: 100.00000	Copy: 2810.015 MiB/s
+4	Method: MCBLOCK	Elapsed: 0.03559	MiB: 100.00000	Copy: 2809.541 MiB/s
+5	Method: MCBLOCK	Elapsed: 0.03554	MiB: 100.00000	Copy: 2814.048 MiB/s
+6	Method: MCBLOCK	Elapsed: 0.03556	MiB: 100.00000	Copy: 2812.228 MiB/s
+7	Method: MCBLOCK	Elapsed: 0.03554	MiB: 100.00000	Copy: 2813.652 MiB/s
+8	Method: MCBLOCK	Elapsed: 0.03562	MiB: 100.00000	Copy: 2807.727 MiB/s
+9	Method: MCBLOCK	Elapsed: 0.03558	MiB: 100.00000	Copy: 2810.410 MiB/s
+AVG	Method: MCBLOCK	Elapsed: 0.03559	MiB: 100.00000	Copy: 2809.739 MiB/s
+➜  ~ cat memory_results.txt 
+Long uses 8 bytes. Allocating 2*13107200 elements = 209715200 bytes of memory.
+Using 262144 bytes as blocks for memcpy block copy test.
+Getting down to business... Doing 10 runs per test.
+0	Method: MEMCPY	Elapsed: 0.04071	MiB: 100.00000	Copy: 2456.158 MiB/s
+1	Method: MEMCPY	Elapsed: 0.04013	MiB: 100.00000	Copy: 2491.653 MiB/s
+2	Method: MEMCPY	Elapsed: 0.04005	MiB: 100.00000	Copy: 2496.817 MiB/s
+3	Method: MEMCPY	Elapsed: 0.04009	MiB: 100.00000	Copy: 2494.388 MiB/s
+4	Method: MEMCPY	Elapsed: 0.04022	MiB: 100.00000	Copy: 2486.140 MiB/s
+5	Method: MEMCPY	Elapsed: 0.04015	MiB: 100.00000	Copy: 2490.412 MiB/s
+6	Method: MEMCPY	Elapsed: 0.04017	MiB: 100.00000	Copy: 2489.606 MiB/s
+7	Method: MEMCPY	Elapsed: 0.04004	MiB: 100.00000	Copy: 2497.690 MiB/s
+8	Method: MEMCPY	Elapsed: 0.04015	MiB: 100.00000	Copy: 2490.846 MiB/s
+9	Method: MEMCPY	Elapsed: 0.04019	MiB: 100.00000	Copy: 2487.995 MiB/s
+AVG	Method: MEMCPY	Elapsed: 0.04019	MiB: 100.00000	Copy: 2488.119 MiB/s over clock: 2385.866
+0	Method: DUMB	Elapsed: 0.04008	MiB: 100.00000	Copy: 2495.259 MiB/s
+1	Method: DUMB	Elapsed: 0.04015	MiB: 100.00000	Copy: 2490.412 MiB/s
+2	Method: DUMB	Elapsed: 0.04023	MiB: 100.00000	Copy: 2485.769 MiB/s
+3	Method: DUMB	Elapsed: 0.04010	MiB: 100.00000	Copy: 2493.517 MiB/s
+4	Method: DUMB	Elapsed: 0.04024	MiB: 100.00000	Copy: 2485.151 MiB/s
+5	Method: DUMB	Elapsed: 0.04020	MiB: 100.00000	Copy: 2487.562 MiB/s
+6	Method: DUMB	Elapsed: 0.04016	MiB: 100.00000	Copy: 2490.226 MiB/s
+7	Method: DUMB	Elapsed: 0.04028	MiB: 100.00000	Copy: 2482.375 MiB/s
+8	Method: DUMB	Elapsed: 0.04011	MiB: 100.00000	Copy: 2492.833 MiB/s
+9	Method: DUMB	Elapsed: 0.04020	MiB: 100.00000	Copy: 2487.315 MiB/s
+AVG	Method: DUMB	Elapsed: 0.04018	MiB: 100.00000	Copy: 2489.036 MiB/s over clock: 2404.829
+0	Method: MCBLOCK	Elapsed: 0.03169	MiB: 100.00000	Copy: 3155.570 MiB/s
+1	Method: MCBLOCK	Elapsed: 0.03155	MiB: 100.00000	Copy: 3169.271 MiB/s
+2	Method: MCBLOCK	Elapsed: 0.03154	MiB: 100.00000	Copy: 3170.477 MiB/s
+3	Method: MCBLOCK	Elapsed: 0.03153	MiB: 100.00000	Copy: 3171.180 MiB/s
+4	Method: MCBLOCK	Elapsed: 0.03153	MiB: 100.00000	Copy: 3171.583 MiB/s
+5	Method: MCBLOCK	Elapsed: 0.03154	MiB: 100.00000	Copy: 3170.175 MiB/s
+6	Method: MCBLOCK	Elapsed: 0.03155	MiB: 100.00000	Copy: 3169.773 MiB/s
+7	Method: MCBLOCK	Elapsed: 0.03153	MiB: 100.00000	Copy: 3171.583 MiB/s
+8	Method: MCBLOCK	Elapsed: 0.03152	MiB: 100.00000	Copy: 3172.186 MiB/s
+9	Method: MCBLOCK	Elapsed: 0.03157	MiB: 100.00000	Copy: 3167.765 MiB/s
+AVG	Method: MCBLOCK	Elapsed: 0.03156	MiB: 100.00000	Copy: 3168.949 MiB/s over clock: 2809.739
+➜  ~ dd if=/dev/zero of=/tmp/test bs=1M count=500 oflag=dsync   
+500+0 records in
+500+0 records out
+524288000 bytes (524 MB, 500 MiB) copied, 37.1092 s, 14.1 MB/s
+➜  ~ sudo nvim /boot/firmware/config.txt 
+➜  ~ ls                                 
+Bookshelf  Desktop  Documents  Downloads  LMC_programs  memory_results2.txt  memory_results.txt  Music  myenv  Pictures  Public  ram_speed_test.txt  repos  Templates  testfile  test.txt  Videos
+➜  ~ cat ram_speed_test.txt 
+RAM read | write speed test:
+
+write speed:
+500+0 records in
+500+0 records out
+524288000 bytes (524 MB, 500 MiB) copied, 41.4999 s, 12.6 MB/s
+
+read speed:
+500+0 records in
+500+0 records out
+524288000 bytes (524 MB, 500 MiB) copied, 0.400473 s, 1.3 GB/s
+
+Network Statistics:
+
+network Latency:
+--- 8.8.8.8 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4007ms
+rtt min/avg/max/mdev = 9.629/10.320/12.023/0.888 ms
+
+Network bandwidth:
+Download Mbps
+128.47
+Upload Mbps
+158.97
+
+
+Storage Latency | Bandwidth:
+storage latency:
+--- /home/dylan/ (ext4 /dev/mmcblk0p2 58.1 GiB) ioping statistics ---
+9 requests completed in 5.55 ms, 36 KiB read, 1.62 k iops, 6.33 MiB/s
+generated 10 requests in 9.00 s, 40 KiB, 1 iops, 4.44 KiB/s
+min/avg/max/mdev = 505.2 us / 616.9 us / 671.5 us / 66.1 us
+
+storage bandwidth:
+write speed test:
+1000+0 records in
+1000+0 records out
+1048576000 bytes (1.0 GB, 1000 MiB) copied, 66.4651 s, 15.8 MB/s
+
+read speed test:
+1000+0 records in
+1000+0 records out
+1048576000 bytes (1.0 GB, 1000 MiB) copied, 0.768703 s, 1.4 GB/s
+
